@@ -65,9 +65,8 @@ they share a handle.
 
 ### Steam Workshop
 
-Subscribe on the Teamfight Manager 2 Workshop, enable
-**Real World Free Agent Cleanup** in the in-game Mods menu, then restart the
-game when prompted.
+[Subscribe to Real World Free Agent Cleanup](https://steamcommunity.com/sharedfiles/filedetails/?id=3773383684),
+enable it in the in-game Mods menu, then restart the game when prompted.
 
 ### Manual GitHub release
 
