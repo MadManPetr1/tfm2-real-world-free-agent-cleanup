@@ -6,6 +6,7 @@ param()
 
 $ErrorActionPreference = "Stop"
 $root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+Add-Type -AssemblyName System.Drawing
 
 foreach ($relativePath in @(
     "Cargo.toml",
@@ -13,6 +14,8 @@ foreach ($relativePath in @(
     "src/lib.rs",
     "mod.mod_info",
     "mod.override_info",
+    "thumbnail.png",
+    "assets/thumbnail-master.png",
     "README.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md",
@@ -27,6 +30,16 @@ foreach ($relativePath in @(
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         throw "Required file is missing: $relativePath"
     }
+}
+
+$image = [System.Drawing.Image]::FromFile((Join-Path $root "thumbnail.png"))
+try {
+    if ($image.Width -ne 512 -or $image.Height -ne 512) {
+        throw "thumbnail.png must be 512x512."
+    }
+}
+finally {
+    $image.Dispose()
 }
 
 $modInfo = Get-Content -LiteralPath (Join-Path $root "mod.mod_info") -Raw | ConvertFrom-Json

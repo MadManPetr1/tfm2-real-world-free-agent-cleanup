@@ -7,16 +7,20 @@ The project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-07-28
+
 ### Changed
 
 - Added complete public documentation, contribution guidance, security
   reporting, release presentation, and packaging validation.
 - Identified Real World Database '26 by Crown as the primary compatibility
   target and credited the original Workshop pack.
+- Added original Workshop thumbnail artwork matching the shared mod visual
+  style.
 - Relicensed new project versions under MPL-2.0 so distributed changes to
   covered files remain shareable.
 - Clarified that MPL-2.0 covers the source project but does not grant
-  trademark or future artwork rights.
+  trademark or original artwork rights.
 
 ## [0.1.2] - 2026-07-28
 
@@ -47,5 +51,6 @@ The project uses [Semantic Versioning](https://semver.org/).
 - Authoritative retirement through the game server extension.
 - Per-save cleanup count and name records in the mod save namespace.
 
-[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/tree/v0.1.2

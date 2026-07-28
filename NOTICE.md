@@ -5,8 +5,10 @@ copyright © 2026 MadManPetr1 and are available under the Mozilla Public License
 2.0.
 
 MPL-2.0 does not grant trademark rights in the Real World Free Agent Cleanup
-name. Any original artwork added to an official release will be identified
-separately and is not covered by MPL-2.0 unless explicitly stated.
+name. `thumbnail.png` and `assets/thumbnail-master.png` are copyright © 2026
+MadManPetr1, All Rights Reserved. They may remain with unmodified copies of the
+original project and its official release packages. Forks must use their own
+artwork unless permission is granted.
 
 This project was made primarily as an unofficial compatibility companion for
 Real World Database '26 by Crown:

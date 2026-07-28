@@ -7,7 +7,7 @@ by Crown.
 [Rules](#cleanup-rules) · [Installation](#installation) · [Save safety](#save-safety) · [Building](#building-from-source)
 
 > [!IMPORTANT]
-> Version **0.1.2** is built for Teamfight Manager 2 **0.5.2**.
+> Version **0.1.3** is built for Teamfight Manager 2 **0.5.2**.
 
 This mod exists because Real World Database '26 imports real players and
 rosters while Teamfight Manager 2 can still supply overlapping generated free
@@ -137,6 +137,8 @@ To validate and create a player-ready archive:
 
 - `src/lib.rs` — authoritative cleanup and client-side scouting compatibility
 - `mod.mod_info` — mod metadata and supported game range
+- `thumbnail.png` — 512×512 in-game and Workshop thumbnail
+- `assets/thumbnail-master.png` — original high-resolution artwork
 - `build_local.ps1` — SDK-aware native build
 - `scripts/` — repository validation and release packaging
 - `docs/PRESENTATION.md` — ready-to-use public listing copy
