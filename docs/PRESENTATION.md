@@ -8,8 +8,8 @@
 
 **Description**
 
-Conservative duplicate-player cleanup for Teamfight Manager 2 careers created
-from real-world database packs.
+Unofficial companion cleanup for Crown's Real World Database '26, removing
+generated free-agent collisions and narrowly verified stale roster records.
 
 **Topics**
 
@@ -24,14 +24,18 @@ Real World Free Agent Cleanup
 
 **Short description**
 
-Remove exact generated free-agent collisions and narrowly verified stale
-roster-transition duplicates from imported real-world database careers.
+Clean up generated free-agent collisions and stale roster-transition duplicates
+in careers using Crown's Real World Database '26.
 
 **Full description**
 
-Real World Free Agent Cleanup addresses duplicate athlete records created when
-real-world roster data, historical team entries, academy registrations, and
-the game's generated free agents overlap.
+Real World Free Agent Cleanup was made primarily as an unofficial companion for
+Crown's Real World Database '26.
+
+The database pack imports real players and rosters, but Teamfight Manager 2 can
+still supply overlapping generated free agents or older roster entries. This
+mod removes those conflicts without changing or redistributing the database
+pack.
 
 CONSERVATIVE RULES
 
@@ -62,8 +66,12 @@ Source code and documentation are available under MPL-2.0. New contracted
 corrections require evidence that both records are the same real person and
 that one exact team entry is stale.
 
-This mod does not include a real-world database pack and is not affiliated
-with or endorsed by Team Samoyed, Riot Games, teams, or players.
+Real World Database '26 is created by Crown:
+https://steamcommunity.com/sharedfiles/filedetails/?id=3733195966
+
+This unofficial companion mod does not include the database pack and is not
+affiliated with or endorsed by Crown, Team Samoyed, Riot Games, teams, or
+players.
 
 ## Screenshot plan
 

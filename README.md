@@ -1,18 +1,25 @@
 # Real World Free Agent Cleanup
 
-Conservative duplicate-player cleanup for **Teamfight Manager 2** careers
-created from real-world database packs.
+An unofficial companion cleanup made primarily for
+**[Real World Database '26](https://steamcommunity.com/sharedfiles/filedetails/?id=3733195966)**
+by Crown.
 
 [Rules](#cleanup-rules) · [Installation](#installation) · [Save safety](#save-safety) · [Building](#building-from-source)
 
 > [!IMPORTANT]
 > Version **0.1.2** is built for Teamfight Manager 2 **0.5.2**.
 
+This mod exists because Real World Database '26 imports real players and
+rosters while Teamfight Manager 2 can still supply overlapping generated free
+agents and older roster records. It removes those conflicts without modifying
+or redistributing Crown's database pack.
+
 ## What it fixes
 
-Real-world database imports can combine current rosters, historical roster
-entries, academy registrations, and the game's generated free-agent pool. That
-can produce two athlete records for one person.
+The main target is Real World Database '26. Its imported current rosters,
+historical entries, and academy registrations can overlap with the game's
+built-in generated free-agent pool or with another roster entry for the same
+person.
 
 This mod removes only cases it can identify conservatively:
 
@@ -101,7 +108,8 @@ Career saves are normally stored in:
 
 - Teamfight Manager 2 `0.5.2`
 - The matching `0.5.2` Mod SDK for source builds
-- Designed for imported real-world database careers
+- Primarily designed for Real World Database '26 v1.1.0 by Crown
+- May also help compatible imported real-world database careers
 - Exact-name free-agent matching only
 - Contracted-player corrections require an explicitly reviewed team transition
 
@@ -155,6 +163,6 @@ MPL-2.0 does not grant trademark rights in the project name. Any original
 artwork added to an official release will carry its own asset notice; see
 [NOTICE](NOTICE.md).
 
-This project does not redistribute a real-world database pack and is not
-affiliated with or endorsed by Team Samoyed, Riot Games, tournament operators,
-teams, or players.
+This is an unofficial companion project. It does not redistribute Real World
+Database '26 and is not affiliated with or endorsed by Crown, Team Samoyed,
+Riot Games, tournament operators, teams, or players.

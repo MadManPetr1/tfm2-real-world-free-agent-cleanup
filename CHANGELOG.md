@@ -11,6 +11,8 @@ The project uses [Semantic Versioning](https://semver.org/).
 
 - Added complete public documentation, contribution guidance, security
   reporting, release presentation, and packaging validation.
+- Identified Real World Database '26 by Crown as the primary compatibility
+  target and credited the original Workshop pack.
 - Relicensed new project versions under MPL-2.0 so distributed changes to
   covered files remain shareable.
 - Clarified that MPL-2.0 covers the source project but does not grant
