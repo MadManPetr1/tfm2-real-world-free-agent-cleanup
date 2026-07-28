@@ -13,8 +13,8 @@ The project uses [Semantic Versioning](https://semver.org/).
   reporting, release presentation, and packaging validation.
 - Relicensed new project versions under MPL-2.0 so distributed changes to
   covered files remain shareable.
-- Reserved the project name and future original branding from the source-code
-  license.
+- Clarified that MPL-2.0 covers the source project but does not grant
+  trademark or future artwork rights.
 
 ## [0.1.2] - 2026-07-28
 

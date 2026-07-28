@@ -151,8 +151,9 @@ The original source code, scripts, and documentation are released under the
 [Mozilla Public License 2.0](LICENSE). Distributed changes to covered files
 must remain available under MPL-2.0.
 
-The project name and future original branding are reserved and are not
-licensed under MPL-2.0; see [NOTICE](NOTICE.md).
+MPL-2.0 does not grant trademark rights in the project name. Any original
+artwork added to an official release will carry its own asset notice; see
+[NOTICE](NOTICE.md).
 
 This project does not redistribute a real-world database pack and is not
 affiliated with or endorsed by Team Samoyed, Riot Games, tournament operators,
