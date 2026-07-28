@@ -155,10 +155,8 @@ impl ModExtension for CleanupClientExtension {
         };
 
         let database_id = data.db().id;
-        let database_changed = self
-            .last_database_id
-            .swap(database_id, Ordering::AcqRel)
-            != database_id;
+        let database_changed =
+            self.last_database_id.swap(database_id, Ordering::AcqRel) != database_id;
         let update = self.update_counter.fetch_add(1, Ordering::AcqRel);
         if !database_changed && !update.is_multiple_of(60) {
             return;
@@ -263,3 +261,6 @@ mod tests {
         assert_eq!(verified_stale_contract_ids(&records), vec![2]);
     }
 }
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.

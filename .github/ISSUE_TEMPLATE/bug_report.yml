@@ -1,0 +1,62 @@
+name: Bug report
+description: Report an incorrect removal or a duplicate the mod missed.
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not upload personal save files. Remove private paths and identifying information from logs or screenshots.
+  - type: input
+    id: game-version
+    attributes:
+      label: Teamfight Manager 2 version
+      placeholder: "0.5.2"
+    validations:
+      required: true
+  - type: input
+    id: mod-version
+    attributes:
+      label: Cleanup mod version
+      placeholder: "0.1.2"
+    validations:
+      required: true
+  - type: dropdown
+    id: problem-type
+    attributes:
+      label: Problem type
+      options:
+        - Real player was removed incorrectly
+        - Generated free-agent duplicate remains
+        - Contracted duplicate remains
+        - Installation or startup
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: records
+    attributes:
+      label: Affected records
+      description: List the visible name, team or free-agent status, role, and contract end date for each record.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: For contracted duplicates, link reliable roster-history evidence and identify the stale record.
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I backed up the affected save.
+          required: true
+        - label: I removed private information and did not attach a save file.
+          required: true

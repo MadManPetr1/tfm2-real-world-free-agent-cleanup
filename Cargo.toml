@@ -4,7 +4,10 @@ version = "0.1.2"
 edition = "2021"
 authors = ["MadManPetr1"]
 description = "Removes duplicate generated free agents from real-world database saves"
-license = "MIT"
+license = "MPL-2.0"
+readme = "README.md"
+repository = "https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup"
+keywords = ["teamfight-manager-2", "mod", "database", "free-agents"]
 
 [lib]
 crate-type = ["cdylib"]

@@ -1,0 +1,62 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+param()
+
+$ErrorActionPreference = "Stop"
+$root = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+
+foreach ($relativePath in @(
+    "Cargo.toml",
+    "Cargo.lock",
+    "src/lib.rs",
+    "mod.mod_info",
+    "mod.override_info",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "LICENSE",
+    "NOTICE.md",
+    "docs/PRESENTATION.md",
+    "docs/RELEASING.md",
+    "scripts/package_release.ps1"
+)) {
+    $path = Join-Path $root $relativePath
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
+        throw "Required file is missing: $relativePath"
+    }
+}
+
+$modInfo = Get-Content -LiteralPath (Join-Path $root "mod.mod_info") -Raw | ConvertFrom-Json
+$cargo = Get-Content -LiteralPath (Join-Path $root "Cargo.toml") -Raw
+$cargoVersion = [regex]::Match($cargo, '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
+if ($cargoVersion -ne $modInfo.version) {
+    throw "Version mismatch: Cargo.toml is $cargoVersion, mod.mod_info is $($modInfo.version)."
+}
+if ($cargo -notmatch '(?m)^license\s*=\s*"MPL-2\.0"') {
+    throw "Cargo.toml must declare MPL-2.0."
+}
+
+$source = Get-Content -LiteralPath (Join-Path $root "src/lib.rs") -Raw
+if ($source -notmatch 'const MOD_ID: &str = "real_world_free_agent_cleanup";') {
+    throw 'The Rust MOD_ID must remain "real_world_free_agent_cleanup".'
+}
+if ($source -notmatch 'CONTRACT_CORRECTIONS' -or
+    $source -notmatch 'verified_stale_contract_ids') {
+    throw "Contracted-player cleanup must remain an explicit, reviewed correction list."
+}
+
+Push-Location $root
+try {
+    cargo fmt --check
+    if ($LASTEXITCODE -ne 0) {
+        throw "cargo fmt --check failed."
+    }
+}
+finally {
+    Pop-Location
+}
+
+Write-Host "Repository validation passed for Real World Free Agent Cleanup v$($modInfo.version)."

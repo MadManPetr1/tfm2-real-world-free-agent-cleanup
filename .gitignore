@@ -2,3 +2,10 @@
 /real_world_free_agent_cleanup.dll
 /tools/*.exe
 /builds/
+*.pdb
+*.lib
+*.exp
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

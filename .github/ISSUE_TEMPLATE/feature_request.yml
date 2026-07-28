@@ -1,0 +1,25 @@
+name: Data correction request
+description: Propose a narrowly evidenced duplicate-record correction.
+title: "[Correction]: "
+labels: ["data-correction"]
+body:
+  - type: input
+    id: player
+    attributes:
+      label: Player name
+    validations:
+      required: true
+  - type: textarea
+    id: records
+    attributes:
+      label: Conflicting records
+      description: Include team or free-agent status, role, and contract end date for both records.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Reliable evidence
+      description: Link roster-history sources and explain which record is stale. Matching names alone are insufficient.
+    validations:
+      required: true
