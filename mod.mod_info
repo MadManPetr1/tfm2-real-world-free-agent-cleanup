@@ -1,0 +1,13 @@
+{
+  "name": "Real World Free Agent Cleanup",
+  "author": "MadManPetr1",
+  "version": "0.1.2",
+  "description": "Removes duplicate generated free agents and narrowly verified overlapping real-world roster records from saves and scouting lists.",
+  "last_updated": "2026-07-28",
+  "dependencies": [
+    {
+      "mod_id": "base",
+      "version": ">=0.5.2, <0.5.3"
+    }
+  ]
+}

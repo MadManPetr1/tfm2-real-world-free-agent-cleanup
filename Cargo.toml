@@ -1,0 +1,14 @@
+[package]
+name = "real_world_free_agent_cleanup"
+version = "0.1.2"
+edition = "2021"
+authors = ["MadManPetr1"]
+description = "Removes duplicate generated free agents from real-world database saves"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+
+[workspace]
