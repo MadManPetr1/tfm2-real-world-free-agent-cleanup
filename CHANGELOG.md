@@ -7,6 +7,13 @@ The project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-07-28
+
+### Changed
+
+- Replaced the initial Workshop thumbnail with the creator-provided pixel-art
+  revision.
+
 ## [0.1.3] - 2026-07-28
 
 ### Changed
@@ -51,6 +58,7 @@ The project uses [Semantic Versioning](https://semver.org/).
 - Authoritative retirement through the game server extension.
 - Per-save cleanup count and name records in the mod save namespace.
 
-[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/tree/v0.1.2

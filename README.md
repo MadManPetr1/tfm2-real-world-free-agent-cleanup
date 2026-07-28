@@ -7,7 +7,7 @@ by Crown.
 [Rules](#cleanup-rules) · [Installation](#installation) · [Save safety](#save-safety) · [Building](#building-from-source)
 
 > [!IMPORTANT]
-> Version **0.1.3** is built for Teamfight Manager 2 **0.5.2**.
+> Version **0.1.4** is built for Teamfight Manager 2 **0.5.2**.
 
 This mod exists because Real World Database '26 imports real players and
 rosters while Teamfight Manager 2 can still supply overlapping generated free

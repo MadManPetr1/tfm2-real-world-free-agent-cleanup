@@ -1,7 +1,7 @@
 {
   "name": "Real World Free Agent Cleanup",
   "author": "MadManPetr1",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Unofficial compatibility cleanup made primarily for Crown's Real World Database '26. Removes generated free-agent collisions and narrowly verified stale roster records.",
   "last_updated": "2026-07-28",
   "dependencies": [
