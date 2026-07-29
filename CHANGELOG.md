@@ -7,6 +7,27 @@ The project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-07-29
+
+### Changed
+
+- Rebuilt the native mod against the Teamfight Manager 2 `0.5.3` Mod SDK.
+- Updated the supported game range to `>=0.5.3, <0.5.4`.
+- Updated the local build wrapper to link the SDK's LLVM bitcode with its
+  pinned Rust LLVM linker.
+
+### Performance
+
+- Reduced steady-state client snapshot scans from roughly once per second to
+  once every five seconds.
+- Normalized player and team names without allocating a temporary string
+  vector.
+
+### Safety
+
+- Excluded retired contracted records from client-side verified transition
+  matching, aligning it with the authoritative server cleanup.
+
 ## [0.1.4] - 2026-07-28
 
 ### Changed
@@ -58,7 +79,8 @@ The project uses [Semantic Versioning](https://semver.org/).
 - Authoritative retirement through the game server extension.
 - Per-save cleanup count and name records in the mod save namespace.
 
-[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/tree/v0.1.2

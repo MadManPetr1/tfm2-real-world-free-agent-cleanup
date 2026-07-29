@@ -7,7 +7,7 @@ by Crown.
 [Rules](#cleanup-rules) · [Installation](#installation) · [Save safety](#save-safety) · [Building](#building-from-source)
 
 > [!IMPORTANT]
-> Version **0.1.4** is built for Teamfight Manager 2 **0.5.2**.
+> Version **0.1.5** is built for Teamfight Manager 2 **0.5.3**.
 
 This mod exists because Real World Database '26 imports real players and
 rosters while Teamfight Manager 2 can still supply overlapping generated free
@@ -105,8 +105,8 @@ Career saves are normally stored in:
 
 ## Requirements and limitations
 
-- Teamfight Manager 2 `0.5.2`
-- The matching `0.5.2` Mod SDK for source builds
+- Teamfight Manager 2 `0.5.3`
+- The matching `0.5.3` Mod SDK for source builds
 - Primarily designed for Real World Database '26 v1.1.0 by Crown
 - May also help compatible imported real-world database careers
 - Exact-name free-agent matching only

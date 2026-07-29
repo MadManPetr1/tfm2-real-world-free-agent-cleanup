@@ -5,16 +5,23 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 const MOD_ID: &str = "real_world_free_agent_cleanup";
 const SAVE_SCHEMA_VERSION: usize = 1;
+const CLIENT_RESCAN_FRAMES: usize = 300;
 const CONTRACT_CORRECTIONS: &[(&str, &str, &str)] = &[
     ("zyko", "supernova", "darkzero dragonsteel"),
     ("zekas", "vivo keyd stars", "vivo keyd stars academy"),
 ];
 
 fn normalized_name(name: &str) -> String {
-    name.split_whitespace()
-        .map(|part| part.to_lowercase())
-        .collect::<Vec<_>>()
-        .join(" ")
+    let mut normalized = String::with_capacity(name.len());
+    for part in name.split_whitespace() {
+        if !normalized.is_empty() {
+            normalized.push(' ');
+        }
+        for character in part.chars() {
+            normalized.extend(character.to_lowercase());
+        }
+    }
+    normalized
 }
 
 fn contract_team_id(athlete: &Athlete) -> Option<usize> {
@@ -158,7 +165,7 @@ impl ModExtension for CleanupClientExtension {
         let database_changed =
             self.last_database_id.swap(database_id, Ordering::AcqRel) != database_id;
         let update = self.update_counter.fetch_add(1, Ordering::AcqRel);
-        if !database_changed && !update.is_multiple_of(60) {
+        if !database_changed && !update.is_multiple_of(CLIENT_RESCAN_FRAMES) {
             return;
         }
 
@@ -188,7 +195,10 @@ impl ModExtension for CleanupClientExtension {
             let contracted_records = database
                 .athletes
                 .values()
-                .filter(|athlete| !athlete.contract.is_free_agent())
+                .filter(|athlete| {
+                    !athlete.contract.is_free_agent()
+                        && !matches!(athlete.retirement, RetirementState::Retired)
+                })
                 .filter_map(|athlete| {
                     let team_id = contract_team_id(athlete)?;
                     let team = database.teams.get(&team_id)?;
@@ -219,7 +229,7 @@ impl ModExtension for CleanupClientExtension {
             removed += usize::from(database.athletes.remove(&athlete_id).is_some());
         }
 
-        println!("[{MOD_ID}] removed {removed} duplicate free agent(s) from the client snapshot");
+        println!("[{MOD_ID}] removed {removed} duplicate record(s) from the client snapshot");
     }
 }
 

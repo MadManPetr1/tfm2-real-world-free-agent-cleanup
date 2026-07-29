@@ -9,7 +9,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 if ([string]::IsNullOrWhiteSpace($SdkDir)) {
-    throw "Pass -SdkDir <path-to-v0.5.2-mod-sdk> or set TFM2_MOD_SDK."
+    throw "Pass -SdkDir <path-to-v0.5.3-mod-sdk> or set TFM2_MOD_SDK."
 }
 
 $sdk = (Resolve-Path -LiteralPath $SdkDir).Path
@@ -17,6 +17,10 @@ $depsDir = Join-Path $sdk "deps"
 $nativeDir = Join-Path $sdk "native"
 $manifest = Join-Path $PSScriptRoot "Cargo.toml"
 $targetDir = Join-Path $PSScriptRoot "target"
+$baseVersion = (Get-Content -LiteralPath (Join-Path $sdk "base_version.txt") -Raw).Trim()
+if ($baseVersion -ne "0.5.3") {
+    throw "Real World Free Agent Cleanup 0.1.5 must be built with the 0.5.3 Mod SDK; found $baseVersion."
+}
 
 $pinned = Select-String -LiteralPath (Join-Path $sdk "rust-toolchain.toml") `
     -Pattern '^\s*channel\s*=\s*"([^"]+)"' |
@@ -26,6 +30,29 @@ if (-not $pinned) {
     throw "Could not read the SDK's pinned Rust toolchain."
 }
 $env:RUSTUP_TOOLCHAIN = $pinned
+
+# SDK 0.5.3 ships its Rust object code as LLVM bitcode. MSVC link.exe cannot
+# consume those archive members, so expose rust-lld under its COFF driver name.
+$sysroot = (& rustup run $pinned rustc --print sysroot | Select-Object -First 1).Trim()
+if ([string]::IsNullOrWhiteSpace($sysroot) -or -not (Test-Path -LiteralPath $sysroot)) {
+    throw "Could not locate the SDK's pinned Rust sysroot."
+}
+$rustLld = Join-Path $sysroot "lib\rustlib\x86_64-pc-windows-msvc\bin\rust-lld.exe"
+if (-not (Test-Path -LiteralPath $rustLld -PathType Leaf)) {
+    throw "rust-lld.exe is missing from the SDK's pinned Rust toolchain."
+}
+$linkerDir = Join-Path ([System.IO.Path]::GetTempPath()) "tfm2-mod-sdk-linker\$pinned"
+$lldLink = Join-Path $linkerDir "lld-link.exe"
+New-Item -ItemType Directory -Path $linkerDir -Force | Out-Null
+if (-not (Test-Path -LiteralPath $lldLink -PathType Leaf)) {
+    try {
+        New-Item -ItemType HardLink -Path $lldLink -Target $rustLld -ErrorAction Stop | Out-Null
+    }
+    catch {
+        Copy-Item -LiteralPath $rustLld -Destination $lldLink
+    }
+}
+$env:CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_LINKER = $lldLink
 
 function Find-SdkRlib([string]$pattern) {
     $matches = @(Get-ChildItem -LiteralPath $depsDir -Filter $pattern)
