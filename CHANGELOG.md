@@ -7,6 +7,21 @@ The project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-07-29
+
+### Changed
+
+- Rebuilt the native DLL against the Teamfight Manager 2 `0.5.2` Mod SDK as
+  the compatibility baseline.
+- Expanded the supported game range to `>=0.5.2, <0.5.4`.
+- Added an explicit `real_world_free_agent_cleanup` package identity so manual
+  and Workshop installations resolve the same mod ID.
+
+### Compatibility
+
+- Verified that the exact `0.5.2`-baseline DLL loads, registers, and reaches
+  the rendered title screen on Teamfight Manager 2 `0.5.3`.
+
 ## [0.1.5] - 2026-07-29
 
 ### Changed
@@ -79,7 +94,8 @@ The project uses [Semantic Versioning](https://semver.org/).
 - Authoritative retirement through the game server extension.
 - Per-save cleanup count and name records in the mod save namespace.
 
-[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.5...HEAD
+[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.2...v0.1.3

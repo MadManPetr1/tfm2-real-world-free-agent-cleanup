@@ -62,7 +62,7 @@ not appropriate for your database.
 
 COMPATIBILITY
 
-Version 0.1.5 is built for Teamfight Manager 2 0.5.3.
+Version 0.1.6 supports Teamfight Manager 2 0.5.2 and 0.5.3.
 
 SOURCE AND CONTRIBUTIONS
 

@@ -43,6 +43,9 @@ finally {
 }
 
 $modInfo = Get-Content -LiteralPath (Join-Path $root "mod.mod_info") -Raw | ConvertFrom-Json
+if ($modInfo.mod_id -ne "real_world_free_agent_cleanup") {
+    throw "mod.mod_info must declare mod_id real_world_free_agent_cleanup."
+}
 $cargo = Get-Content -LiteralPath (Join-Path $root "Cargo.toml") -Raw
 $cargoVersion = [regex]::Match($cargo, '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
 if ($cargoVersion -ne $modInfo.version) {

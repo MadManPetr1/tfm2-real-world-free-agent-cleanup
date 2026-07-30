@@ -9,7 +9,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 if ([string]::IsNullOrWhiteSpace($SdkDir)) {
-    throw "Pass -SdkDir <path-to-v0.5.3-mod-sdk> or set TFM2_MOD_SDK."
+    throw "Pass -SdkDir <path-to-v0.5.2-mod-sdk> or set TFM2_MOD_SDK."
 }
 
 $sdk = (Resolve-Path -LiteralPath $SdkDir).Path
@@ -18,8 +18,8 @@ $nativeDir = Join-Path $sdk "native"
 $manifest = Join-Path $PSScriptRoot "Cargo.toml"
 $targetDir = Join-Path $PSScriptRoot "target"
 $baseVersion = (Get-Content -LiteralPath (Join-Path $sdk "base_version.txt") -Raw).Trim()
-if ($baseVersion -ne "0.5.3") {
-    throw "Real World Free Agent Cleanup 0.1.5 must be built with the 0.5.3 Mod SDK; found $baseVersion."
+if ($baseVersion -ne "0.5.2") {
+    throw "Real World Free Agent Cleanup 0.1.6 must be built with the 0.5.2 compatibility-baseline Mod SDK; found $baseVersion."
 }
 
 $pinned = Select-String -LiteralPath (Join-Path $sdk "rust-toolchain.toml") `
@@ -31,7 +31,7 @@ if (-not $pinned) {
 }
 $env:RUSTUP_TOOLCHAIN = $pinned
 
-# SDK 0.5.3 ships its Rust object code as LLVM bitcode. MSVC link.exe cannot
+# The supported SDK baseline ships Rust object code as LLVM bitcode. MSVC link.exe cannot
 # consume those archive members, so expose rust-lld under its COFF driver name.
 $sysroot = (& rustup run $pinned rustc --print sysroot | Select-Object -First 1).Trim()
 if ([string]::IsNullOrWhiteSpace($sysroot) -or -not (Test-Path -LiteralPath $sysroot)) {
