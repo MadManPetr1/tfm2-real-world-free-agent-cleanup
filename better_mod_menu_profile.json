@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/MadManPetr1/tfm2-better-mod-menu/main/better_mod_menu_profile.schema.json",
+  "schema_version": 1,
+  "display_name": "MadManPetr1",
+  "profile_icon": "profile_icon.png",
+  "bio": "Developer and programmer modding TFM2, with a focus on UX/UI, realism, balance, and integrating League of Legend’s Summoner’s Rift systems.",
+  "links": {
+    "github": "MadManPetr1",
+    "discord": "l95madmanpetr1"
+  }
+}

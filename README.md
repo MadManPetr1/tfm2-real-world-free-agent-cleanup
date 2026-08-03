@@ -136,8 +136,8 @@ To validate and create a player-ready archive:
 
 - `src/lib.rs` — authoritative cleanup and client-side scouting compatibility
 - `mod.mod_info` — mod metadata and supported game range
-- `thumbnail.png` — 512×512 in-game and Workshop thumbnail
-- `assets/thumbnail-master.png` — original high-resolution artwork
+- `thumbnail.png` — 256×256 lossless 2× nearest-neighbor pixel-art thumbnail
+- `assets/thumbnail-master.png` — original 128×128 pixel-art thumbnail
 - `build_local.ps1` — SDK-aware native build
 - `scripts/` — repository validation and release packaging
 - `docs/PRESENTATION.md` — ready-to-use public listing copy

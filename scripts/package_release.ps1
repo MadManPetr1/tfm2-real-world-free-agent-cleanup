@@ -42,6 +42,8 @@ foreach ($name in @(
     "real_world_free_agent_cleanup.dll",
     "mod.mod_info",
     "mod.override_info",
+    "better_mod_menu_profile.json",
+    "profile_icon.png",
     "thumbnail.png",
     "README.md",
     "CHANGELOG.md",
