@@ -1,6 +1,6 @@
 [package]
 name = "real_world_free_agent_cleanup"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 authors = ["MadManPetr1"]
 description = "Unofficial duplicate-player cleanup for Crown's Real World Database '26 and similar imported database careers"

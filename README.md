@@ -1,169 +1,97 @@
+<div align="center">
+
+<img src="thumbnail.png" alt="Real World Free Agent Cleanup icon" width="128">
+
 # Real World Free Agent Cleanup
 
-An unofficial companion cleanup made primarily for
+A conservative companion cleanup for
 **[Real World Database '26](https://steamcommunity.com/sharedfiles/filedetails/?id=3733195966)**
 by Crown.
 
-[Rules](#cleanup-rules) · [Installation](#installation) · [Save safety](#save-safety) · [Building](#building-from-source)
+**RRFAC 0.1.7 · TFM2 0.5.2–0.5.3**
 
-> [!IMPORTANT]
-> Version **0.1.6** supports Teamfight Manager 2 **0.5.2 and 0.5.3**.
+</div>
 
-This mod exists because Real World Database '26 imports real players and
-rosters while Teamfight Manager 2 can still supply overlapping generated free
-agents and older roster records. It removes those conflicts without modifying
-or redistributing Crown's database pack.
+Real-world database imports can overlap with generated free agents or leave an
+older roster record beside the current one. RRFAC retires only conflicts it can
+identify safely and does not modify or redistribute Crown's database.
 
 ## What it fixes
 
-The main target is Real World Database '26. Its imported current rosters,
-historical entries, and academy registrations can overlap with the game's
-built-in generated free-agent pool or with another roster entry for the same
-person.
+- Active generated free agents whose normalized name exactly matches an active
+  contracted player.
+- A small, reviewed list of roster transitions where both the stale and current
+  records appear together.
 
-This mod removes only cases it can identify conservatively:
+Matching is deliberately narrow: case and surrounding whitespace are ignored,
+but fuzzy name matching is never used.
 
-- an active free agent whose normalized name exactly matches an active
-  contracted player;
-- a small list of independently verified roster-transition duplicates where
-  both the old and current team records are simultaneously present.
+### Reviewed roster transitions
 
-## Cleanup rules
-
-### Generated free-agent collisions
-
-When an active free agent has the same normalized name as an active contracted
-player, the contracted player is preserved and the free-agent copy is retired.
-
-Normalization ignores letter case and repeated surrounding whitespace. It does
-not use fuzzy matching.
-
-### Verified roster transitions
-
-Version 0.1.2 includes these narrow corrections:
-
-| Player | Preserve | Remove stale record |
+| Player | Keep | Retire stale record |
 | --- | --- | --- |
 | Zyko | Supernova | DarkZero Dragonsteel |
 | ZekaS | Vivo Keyd Stars | Vivo Keyd Stars Academy |
 
-A correction runs only when both the preserved and stale team records are
-present. The mod does not globally delete contracted players merely because
-they share a handle.
+Each correction runs only when both exact records are present. The operation is
+repeat-safe and never edits the original `.tfm2db` file.
 
-## How it works
-
-- The server-side extension marks a confirmed duplicate athlete as retired,
-  using the game's supported athlete lifecycle instead of deleting database
-  table entries.
-- The client-side extension removes the same duplicate from the local athlete
-  snapshot so scouting panels do not continue displaying the retired record.
-- The operation is repeat-safe: already retired records are not retired again.
-- The original `.tfm2db` database pack is never edited.
-
-## Installation
+## Install
 
 ### Steam Workshop
 
-[Subscribe to Real World Free Agent Cleanup](https://steamcommunity.com/sharedfiles/filedetails/?id=3773383684),
-enable it in the in-game Mods menu, then restart the game when prompted.
+[Subscribe to RRFAC](https://steamcommunity.com/sharedfiles/filedetails/?id=3773383684),
+enable it after importing Real World Database '26, and restart when prompted.
 
-### Manual GitHub release
+### GitHub release
 
-1. Download `real-world-free-agent-cleanup-vX.Y.Z.zip` from this repository's
-   Releases page. Do not download GitHub's automatic “Source code” archive.
-2. Extract the included `real_world_free_agent_cleanup` folder into:
+1. Download `real-world-free-agent-cleanup-v0.1.7.zip` from
+   [GitHub Releases](https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/releases).
+   Do not use GitHub's automatic source-code archive.
+2. Extract `real_world_free_agent_cleanup` into:
 
    ```text
    ...\SteamLibrary\steamapps\common\Teamfight Manager2\mods\
    ```
 
-3. Confirm this structure:
-
-   ```text
-   Teamfight Manager2\mods\real_world_free_agent_cleanup\mod.mod_info
-   Teamfight Manager2\mods\real_world_free_agent_cleanup\real_world_free_agent_cleanup.dll
-   ```
-
-4. Enable the mod and restart the game.
+3. Enable the cleanup mod and restart the game.
 
 ## Save safety
 
 > [!WARNING]
-> This mod intentionally changes athlete state in the loaded career. Back up
-> the latest `save_*.data` file before first use.
+> RRFAC intentionally changes athlete state in the loaded career. Back up the
+> latest `save_*.data` file before first use.
 
-The mod does not delete save files, overwrite the imported `.tfm2db`, or apply
-fuzzy identity matching. Disable it and restore the pre-cleanup save if a
-database-specific correction is not appropriate for your career.
+The mod does not delete save files, overwrite the imported database, or remove
+ambiguous contracted players. If a correction is unsuitable for a career,
+disable the mod and restore the pre-cleanup save.
 
-Career saves are normally stored in:
+## Compatibility
 
-```text
-%APPDATA%\TeamSamoyed\TeamfightManager2\data
-```
+- Teamfight Manager 2 `0.5.2` and `0.5.3`
+- Primarily designed for Real World Database '26 v1.1.0
+- Release DLL built against the `0.5.2` compatibility-baseline Mod SDK
+- Existing careers are supported, with a backup recommended before first use
 
-## Requirements and limitations
+## Reporting another duplicate
 
-- Teamfight Manager 2 `0.5.2` or `0.5.3`
-- The `0.5.2` Mod SDK compatibility baseline for release builds
-- Primarily designed for Real World Database '26 v1.1.0 by Crown
-- May also help compatible imported real-world database careers
-- Exact-name free-agent matching only
-- Contracted-player corrections require an explicitly reviewed team transition
+Open a data-correction request with the handle, role, both displayed teams or
+free-agent state, database/game versions, and reliable roster-history evidence.
+Matching names alone are not enough. Do not upload career saves publicly.
 
-This is not a general identity-merging engine. Different real players can
-share a handle, so ambiguous contracted duplicates are deliberately left
-untouched.
-
-## Building from source
-
-The Mod SDK is not redistributed here. Install the matching SDK with the game,
-then run:
+## Build
 
 ```powershell
 .\build_local.ps1 -SdkDir "C:\path\to\Teamfight Manager2\mod-sdk"
-```
-
-To validate and create a player-ready archive:
-
-```powershell
 .\scripts\validate_repo.ps1
 .\scripts\package_release.ps1 -SdkDir "C:\path\to\Teamfight Manager2\mod-sdk"
 ```
 
-## Project layout
+## License
 
-- `src/lib.rs` — authoritative cleanup and client-side scouting compatibility
-- `mod.mod_info` — mod metadata and supported game range
-- `thumbnail.png` — 256×256 lossless 2× nearest-neighbor pixel-art thumbnail
-- `assets/thumbnail-master.png` — original 128×128 pixel-art thumbnail
-- `build_local.ps1` — SDK-aware native build
-- `scripts/` — repository validation and release packaging
-- `docs/PRESENTATION.md` — ready-to-use public listing copy
+Source code, scripts, and documentation are licensed under the
+[Mozilla Public License 2.0](LICENSE). Project branding and original artwork
+are not covered by MPL-2.0; see [NOTICE.md](NOTICE.md).
 
-## Reporting another duplicate
-
-Open an issue with:
-
-- the exact handle and role;
-- both displayed teams or the free-agent state;
-- a screenshot with private save information removed;
-- reliable roster-history evidence if both records are contracted;
-- the database pack name/version and game version.
-
-Do not upload career saves publicly.
-
-## License and attribution
-
-The original source code, scripts, and documentation are released under the
-[Mozilla Public License 2.0](LICENSE). Distributed changes to covered files
-must remain available under MPL-2.0.
-
-MPL-2.0 does not grant trademark rights in the project name. Any original
-artwork added to an official release will carry its own asset notice; see
-[NOTICE](NOTICE.md).
-
-This is an unofficial companion project. It does not redistribute Real World
-Database '26 and is not affiliated with or endorsed by Crown, Team Samoyed,
-Riot Games, tournament operators, teams, or players.
+This unofficial companion project is not affiliated with or endorsed by Crown,
+Team Samoyed, Riot Games, tournament operators, teams, or players.

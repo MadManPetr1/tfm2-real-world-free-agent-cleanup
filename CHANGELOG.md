@@ -7,6 +7,22 @@ The project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.7] - 2026-08-03
+
+### Added
+
+- Unified Better Mod Menu author profile and profile icon.
+- Refreshed 256 px pixel-art thumbnail.
+
+### Changed
+
+- Simplified player documentation and release presentation.
+- Cleaned source and release packaging without changing cleanup rules.
+
+### Compatibility
+
+- Cleanup behavior and the tested TFM2 `0.5.2`-`0.5.3` range are unchanged.
+
 ## [0.1.6] - 2026-07-29
 
 ### Changed
@@ -94,7 +110,8 @@ The project uses [Semantic Versioning](https://semver.org/).
 - Authoritative retirement through the game server extension.
 - Per-save cleanup count and name records in the mod save namespace.
 
-[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.6...HEAD
+[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.7...HEAD
+[0.1.7]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.3...v0.1.4
