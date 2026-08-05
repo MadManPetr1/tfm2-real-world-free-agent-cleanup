@@ -7,6 +7,14 @@ The project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-05
+
+### Changed
+
+- Standardized the Cargo crate, mod ID, installed folder, and DLL as
+  `tfm2_real_world_free_agent_cleanup`.
+- Preserved the existing conservative and repeat-safe cleanup behavior.
+
 ## [0.1.8] - 2026-08-05
 
 ### Changed
@@ -122,7 +130,8 @@ The project uses [Semantic Versioning](https://semver.org/).
 - Authoritative retirement through the game server extension.
 - Per-save cleanup count and name records in the mod save namespace.
 
-[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.8...HEAD
+[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.8...v0.2.0
 [0.1.8]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.5...v0.1.6

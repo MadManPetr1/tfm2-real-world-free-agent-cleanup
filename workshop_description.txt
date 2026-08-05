@@ -39,11 +39,11 @@ It does not rebalance players, redesign teams or leagues, replace the original d
 
 This mod contains native code:
 
-[code]real_world_free_agent_cleanup.dll[/code]
+[code]tfm2_real_world_free_agent_cleanup.dll[/code]
 
 [url=https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup]Source code on GitHub[/url]
 
-[b]Current version:[/b] v0.1.8
+[b]Current version:[/b] v0.2.0
 [b]Last tested:[/b] 05/08/2026
 
 When reporting a problem, include your game version, database filename, enabled mods, and whether the career was newly created or already in progress.

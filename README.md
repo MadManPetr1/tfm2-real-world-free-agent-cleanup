@@ -8,7 +8,7 @@ A conservative companion cleanup for
 **[Real World Database '26](https://steamcommunity.com/sharedfiles/filedetails/?id=3733195966)**
 by Crown.
 
-**RRFAC 0.1.8 · TFM2 0.5.2–0.5.4**
+**RRFAC 0.2.0 · TFM2 0.5.2–0.5.4**
 
 </div>
 
@@ -45,10 +45,10 @@ enable it after importing Real World Database '26, and restart when prompted.
 
 ### GitHub release
 
-1. Download `real-world-free-agent-cleanup-v0.1.8.zip` from
+1. Download `tfm2-real-world-free-agent-cleanup-v0.2.0.zip` from
    [GitHub Releases](https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/releases).
    Do not use GitHub's automatic source-code archive.
-2. Extract `real_world_free_agent_cleanup` into:
+2. Extract `tfm2_real_world_free_agent_cleanup` into:
 
    ```text
    ...\SteamLibrary\steamapps\common\Teamfight Manager2\mods\
