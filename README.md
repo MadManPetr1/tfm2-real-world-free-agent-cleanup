@@ -8,7 +8,7 @@ A conservative companion cleanup for
 **[Real World Database '26](https://steamcommunity.com/sharedfiles/filedetails/?id=3733195966)**
 by Crown.
 
-**RRFAC 0.1.7 · TFM2 0.5.2–0.5.3**
+**RRFAC 0.1.8 · TFM2 0.5.2–0.5.4**
 
 </div>
 
@@ -45,7 +45,7 @@ enable it after importing Real World Database '26, and restart when prompted.
 
 ### GitHub release
 
-1. Download `real-world-free-agent-cleanup-v0.1.7.zip` from
+1. Download `real-world-free-agent-cleanup-v0.1.8.zip` from
    [GitHub Releases](https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/releases).
    Do not use GitHub's automatic source-code archive.
 2. Extract `real_world_free_agent_cleanup` into:
@@ -68,9 +68,9 @@ disable the mod and restore the pre-cleanup save.
 
 ## Compatibility
 
-- Teamfight Manager 2 `0.5.2` and `0.5.3`
+- Teamfight Manager 2 `0.5.2` through `0.5.4`
 - Primarily designed for Real World Database '26 v1.1.0
-- Release DLL built against the `0.5.2` compatibility-baseline Mod SDK
+- Release DLL built against the `0.5.4` Mod SDK
 - Existing careers are supported, with a backup recommended before first use
 
 ## Reporting another duplicate
@@ -82,9 +82,9 @@ Matching names alone are not enough. Do not upload career saves publicly.
 ## Build
 
 ```powershell
-.\build_local.ps1 -SdkDir "C:\path\to\Teamfight Manager2\mod-sdk"
+.\build_local.ps1 -SdkDir "C:\path\to\Teamfight Manager2\mod-sdk-0.5.4"
 .\scripts\validate_repo.ps1
-.\scripts\package_release.ps1 -SdkDir "C:\path\to\Teamfight Manager2\mod-sdk"
+.\scripts\package_release.ps1 -SdkDir "C:\path\to\Teamfight Manager2\mod-sdk-0.5.4"
 ```
 
 ## License

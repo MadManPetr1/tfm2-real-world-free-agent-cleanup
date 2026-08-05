@@ -19,13 +19,10 @@ foreach ($relativePath in @(
     "thumbnail.png",
     "assets/thumbnail-master.png",
     "README.md",
+    "workshop_description.txt",
     "CHANGELOG.md",
-    "CONTRIBUTING.md",
-    "SECURITY.md",
     "LICENSE",
     "NOTICE.md",
-    "docs/PRESENTATION.md",
-    "docs/RELEASING.md",
     "scripts/package_release.ps1"
 )) {
     $path = Join-Path $root $relativePath
@@ -65,12 +62,37 @@ if ($modInfo.mod_id -ne "real_world_free_agent_cleanup") {
     throw "mod.mod_info must declare mod_id real_world_free_agent_cleanup."
 }
 $cargo = Get-Content -LiteralPath (Join-Path $root "Cargo.toml") -Raw
+$cargoLock = Get-Content -LiteralPath (Join-Path $root "Cargo.lock") -Raw
+$workshop = Get-Content -LiteralPath (Join-Path $root "workshop_description.txt") -Raw
 $cargoVersion = [regex]::Match($cargo, '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
-if ($cargoVersion -ne $modInfo.version) {
-    throw "Version mismatch: Cargo.toml is $cargoVersion, mod.mod_info is $($modInfo.version)."
+$lockVersion = [regex]::Match(
+    $cargoLock,
+    '(?ms)\[\[package\]\]\s+name\s*=\s*"real_world_free_agent_cleanup"\s+version\s*=\s*"([^"]+)"'
+).Groups[1].Value
+if ($cargoVersion -ne $modInfo.version -or $lockVersion -ne $modInfo.version) {
+    throw "Version mismatch between Cargo.toml, Cargo.lock, and mod.mod_info."
 }
 if ($cargo -notmatch '(?m)^license\s*=\s*"MPL-2\.0"') {
     throw "Cargo.toml must declare MPL-2.0."
+}
+$base = @($modInfo.dependencies | Where-Object { $_.mod_id -eq "base" })
+if ($base.Count -ne 1 -or $base[0].version -ne ">=0.5.2, <0.5.5") {
+    throw "RRFAC must declare the supported 0.5.2-0.5.4 base range."
+}
+foreach ($expected in @(
+    "[code]real_world_free_agent_cleanup.dll[/code]",
+    "[b]Current version:[/b] v$($modInfo.version)",
+    "[url=https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup]Source code on GitHub[/url]"
+)) {
+    if ($workshop -notmatch [regex]::Escape($expected)) {
+        throw "Workshop description is missing or inconsistent: $expected"
+    }
+}
+if ($workshop -notmatch '\[b\]Tested with:\[/b\] TFM2 0\.5\.2.+0\.5\.4') {
+    throw "Workshop Tested with line must match the supported base range."
+}
+if ($workshop -notmatch '(?m)^\[b\]Last tested:\[/b\] \d{2}/\d{2}/\d{4}$') {
+    throw "Workshop Last tested must use DD/MM/YYYY."
 }
 
 $source = Get-Content -LiteralPath (Join-Path $root "src/lib.rs") -Raw

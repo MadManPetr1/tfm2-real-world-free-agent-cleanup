@@ -11,14 +11,14 @@ body:
     id: game-version
     attributes:
       label: Teamfight Manager 2 version
-      placeholder: "0.5.3"
+      placeholder: "0.5.4"
     validations:
       required: true
   - type: input
     id: mod-version
     attributes:
       label: Cleanup mod version
-      placeholder: "0.1.7"
+      placeholder: "0.1.8"
     validations:
       required: true
   - type: dropdown

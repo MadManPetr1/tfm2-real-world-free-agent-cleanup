@@ -2,13 +2,13 @@
   "mod_id": "real_world_free_agent_cleanup",
   "name": "Real World Free Agent Cleanup",
   "author": "MadManPetr1",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Unofficial compatibility cleanup made primarily for Crown's Real World Database '26. Removes generated free-agent collisions and narrowly verified stale roster records.",
-  "last_updated": "2026-07-29",
+  "last_updated": "2026-08-05",
   "dependencies": [
     {
       "mod_id": "base",
-      "version": ">=0.5.2, <0.5.4"
+      "version": ">=0.5.2, <0.5.5"
     }
   ]
 }
