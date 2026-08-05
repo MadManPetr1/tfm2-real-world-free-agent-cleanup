@@ -19,7 +19,7 @@ $manifest = Join-Path $PSScriptRoot "Cargo.toml"
 $targetDir = Join-Path $PSScriptRoot "target"
 $baseVersion = (Get-Content -LiteralPath (Join-Path $sdk "base_version.txt") -Raw).Trim()
 if ($baseVersion -ne "0.5.4") {
-    throw "Real World Free Agent Cleanup 0.1.8 must be built with the 0.5.4 Mod SDK; found $baseVersion."
+    throw "Real World Free Agent Cleanup 0.2.0 must be built with the 0.5.4 Mod SDK; found $baseVersion."
 }
 
 $pinned = Select-String -LiteralPath (Join-Path $sdk "rust-toolchain.toml") `
@@ -80,7 +80,7 @@ if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
-$builtDll = Join-Path $targetDir "release\real_world_free_agent_cleanup.dll"
-$outputDll = Join-Path $PSScriptRoot "real_world_free_agent_cleanup.dll"
+$builtDll = Join-Path $targetDir "release\tfm2_real_world_free_agent_cleanup.dll"
+$outputDll = Join-Path $PSScriptRoot "tfm2_real_world_free_agent_cleanup.dll"
 Copy-Item -LiteralPath $builtDll -Destination $outputDll -Force
 Write-Host "Build successful: $outputDll"

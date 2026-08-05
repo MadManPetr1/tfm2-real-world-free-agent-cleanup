@@ -19,16 +19,16 @@ if (-not $SkipBuild) {
     }
 }
 
-$dll = Join-Path $root "real_world_free_agent_cleanup.dll"
+$dll = Join-Path $root "tfm2_real_world_free_agent_cleanup.dll"
 if (-not (Test-Path -LiteralPath $dll -PathType Leaf)) {
-    throw "real_world_free_agent_cleanup.dll is missing."
+    throw "tfm2_real_world_free_agent_cleanup.dll is missing."
 }
 
 $modInfo = Get-Content -LiteralPath (Join-Path $root "mod.mod_info") -Raw | ConvertFrom-Json
 $buildRoot = Join-Path $root "builds"
-$releaseRoot = Join-Path $buildRoot "real-world-free-agent-cleanup-v$($modInfo.version)"
-$runtimeRoot = Join-Path $releaseRoot "real_world_free_agent_cleanup"
-$archive = Join-Path $buildRoot "real-world-free-agent-cleanup-v$($modInfo.version).zip"
+$releaseRoot = Join-Path $buildRoot "tfm2-real-world-free-agent-cleanup-v$($modInfo.version)"
+$runtimeRoot = Join-Path $releaseRoot "tfm2_real_world_free_agent_cleanup"
+$archive = Join-Path $buildRoot "tfm2-real-world-free-agent-cleanup-v$($modInfo.version).zip"
 
 if (Test-Path -LiteralPath $releaseRoot) {
     Remove-Item -LiteralPath $releaseRoot -Recurse -Force
@@ -39,7 +39,7 @@ if (Test-Path -LiteralPath $archive) {
 New-Item -ItemType Directory -Path $runtimeRoot -Force | Out-Null
 
 foreach ($name in @(
-    "real_world_free_agent_cleanup.dll",
+    "tfm2_real_world_free_agent_cleanup.dll",
     "mod.mod_info",
     "mod.override_info",
     "better_mod_menu_profile.json",

@@ -58,8 +58,8 @@ finally {
 }
 
 $modInfo = Get-Content -LiteralPath (Join-Path $root "mod.mod_info") -Raw | ConvertFrom-Json
-if ($modInfo.mod_id -ne "real_world_free_agent_cleanup") {
-    throw "mod.mod_info must declare mod_id real_world_free_agent_cleanup."
+if ($modInfo.mod_id -ne "tfm2_real_world_free_agent_cleanup") {
+    throw "mod.mod_info must declare mod_id tfm2_real_world_free_agent_cleanup."
 }
 $cargo = Get-Content -LiteralPath (Join-Path $root "Cargo.toml") -Raw
 $cargoLock = Get-Content -LiteralPath (Join-Path $root "Cargo.lock") -Raw
@@ -67,7 +67,7 @@ $workshop = Get-Content -LiteralPath (Join-Path $root "workshop_description.txt"
 $cargoVersion = [regex]::Match($cargo, '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
 $lockVersion = [regex]::Match(
     $cargoLock,
-    '(?ms)\[\[package\]\]\s+name\s*=\s*"real_world_free_agent_cleanup"\s+version\s*=\s*"([^"]+)"'
+    '(?ms)\[\[package\]\]\s+name\s*=\s*"tfm2_real_world_free_agent_cleanup"\s+version\s*=\s*"([^"]+)"'
 ).Groups[1].Value
 if ($cargoVersion -ne $modInfo.version -or $lockVersion -ne $modInfo.version) {
     throw "Version mismatch between Cargo.toml, Cargo.lock, and mod.mod_info."
@@ -80,7 +80,7 @@ if ($base.Count -ne 1 -or $base[0].version -ne ">=0.5.2, <0.5.5") {
     throw "RRFAC must declare the supported 0.5.2-0.5.4 base range."
 }
 foreach ($expected in @(
-    "[code]real_world_free_agent_cleanup.dll[/code]",
+    "[code]tfm2_real_world_free_agent_cleanup.dll[/code]",
     "[b]Current version:[/b] v$($modInfo.version)",
     "[url=https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup]Source code on GitHub[/url]"
 )) {
@@ -91,13 +91,13 @@ foreach ($expected in @(
 if ($workshop -notmatch '\[b\]Tested with:\[/b\] TFM2 0\.5\.2.+0\.5\.4') {
     throw "Workshop Tested with line must match the supported base range."
 }
-if ($workshop -notmatch '(?m)^\[b\]Last tested:\[/b\] \d{2}/\d{2}/\d{4}$') {
+if ($workshop -notmatch '(?m)^\[b\]Last tested:\[/b\] \d{2}/\d{2}/\d{4}\r?$') {
     throw "Workshop Last tested must use DD/MM/YYYY."
 }
 
 $source = Get-Content -LiteralPath (Join-Path $root "src/lib.rs") -Raw
-if ($source -notmatch 'const MOD_ID: &str = "real_world_free_agent_cleanup";') {
-    throw 'The Rust MOD_ID must remain "real_world_free_agent_cleanup".'
+if ($source -notmatch 'const MOD_ID: &str = "tfm2_real_world_free_agent_cleanup";') {
+    throw 'The Rust MOD_ID must remain "tfm2_real_world_free_agent_cleanup".'
 }
 if ($source -notmatch 'CONTRACT_CORRECTIONS' -or
     $source -notmatch 'verified_stale_contract_ids') {

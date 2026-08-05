@@ -3,7 +3,7 @@ use mod_api::*;
 use std::collections::HashSet;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-const MOD_ID: &str = "real_world_free_agent_cleanup";
+const MOD_ID: &str = "tfm2_real_world_free_agent_cleanup";
 const SAVE_SCHEMA_VERSION: usize = 1;
 const CLIENT_RESCAN_FRAMES: usize = 300;
 const CONTRACT_CORRECTIONS: &[(&str, &str, &str)] = &[
