@@ -1,0 +1,49 @@
+[h1]Real World Free Agent Cleanup[/h1]
+
+[b]Compatibility cleanup for Crown's Real World Database '26.[/b]
+
+Removes generated free agents that conflict with real-world players, along with a small number of manually verified stale roster records.
+
+[h2]What it fixes[/h2]
+
+[list]
+[*] Duplicate or conflicting generated free agents.
+[*] Free-agent records left in an incorrect state after importing the database.
+[*] A limited number of manually verified stale roster entries.
+[/list]
+
+The cleanup is intentionally conservative and does not broadly delete unrelated free agents.
+
+[h2]Compatibility[/h2]
+
+[b]Designed for:[/b] Crown's Real World Database '26
+[b]Database tested:[/b] 2026MSIv2.tfm2db
+[b]Tested with:[/b] TFM2 0.5.2–0.5.4
+[b]Existing careers:[/b] Supported
+
+Other databases are not guaranteed to be compatible. Backing up your career before first use is recommended.
+
+[h2]Setup[/h2]
+
+[list]
+[*] Subscribe to Crown's Real World Database '26.
+[*] Import it according to the instructions on its Workshop page.
+[*] Subscribe to and enable this cleanup mod, then restart the game when prompted.
+[/list]
+
+[h2]What it does not change[/h2]
+
+It does not rebalance players, redesign teams or leagues, replace the original database, or broadly remove unrelated free agents.
+
+[h2]Source code[/h2]
+
+This mod contains native code:
+
+[code]real_world_free_agent_cleanup.dll[/code]
+
+[url=https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup]Source code on GitHub[/url]
+
+[b]Current version:[/b] v0.1.8
+[b]Last tested:[/b] 05/08/2026
+
+When reporting a problem, include your game version, database filename, enabled mods, and whether the career was newly created or already in progress.

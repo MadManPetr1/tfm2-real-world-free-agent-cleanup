@@ -7,6 +7,18 @@ The project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.8] - 2026-08-05
+
+### Changed
+
+- Rebuilt the native DLL against the Teamfight Manager 2 `0.5.4` Mod SDK.
+- Extended the supported base range to `>=0.5.2, <0.5.5` without changing
+  conservative cleanup rules or existing-career behavior.
+
+### Compatibility
+
+- Runtime-tested on Teamfight Manager 2 `0.5.4`.
+
 ## [0.1.7] - 2026-08-03
 
 ### Added
@@ -110,7 +122,8 @@ The project uses [Semantic Versioning](https://semver.org/).
 - Authoritative retirement through the game server extension.
 - Per-save cleanup count and name records in the mod save namespace.
 
-[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.7...HEAD
+[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.8...HEAD
+[0.1.8]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.6...v0.1.7
 [0.1.6]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.4...v0.1.5
