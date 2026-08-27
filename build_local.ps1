@@ -9,7 +9,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 if ([string]::IsNullOrWhiteSpace($SdkDir)) {
-    throw "Pass -SdkDir <path-to-v0.5.4-mod-sdk> or set TFM2_MOD_SDK."
+    throw "Pass -SdkDir <path-to-v0.5.7-mod-sdk> or set TFM2_MOD_SDK."
 }
 
 $sdk = (Resolve-Path -LiteralPath $SdkDir).Path
@@ -18,8 +18,8 @@ $nativeDir = Join-Path $sdk "native"
 $manifest = Join-Path $PSScriptRoot "Cargo.toml"
 $targetDir = Join-Path $PSScriptRoot "target"
 $baseVersion = (Get-Content -LiteralPath (Join-Path $sdk "base_version.txt") -Raw).Trim()
-if ($baseVersion -ne "0.5.4") {
-    throw "Real World Free Agent Cleanup 0.2.0 must be built with the 0.5.4 Mod SDK; found $baseVersion."
+if ($baseVersion -ne "0.5.7") {
+    throw "Real World Free Agent Cleanup 0.2.3 must be built with the 0.5.7 Mod SDK; found $baseVersion."
 }
 
 $pinned = Select-String -LiteralPath (Join-Path $sdk "rust-toolchain.toml") `

@@ -7,6 +7,48 @@ The project uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-08-26
+
+### Changed
+
+- Rebuilt the native DLL against the Teamfight Manager 2 `0.5.7` Mod SDK.
+- Restricted the declared base range to `>=0.5.7, <0.5.8` because the native
+  SDK libraries changed and older game versions have not been runtime-tested
+  with this build.
+
+### Compatibility
+
+- Tested on Teamfight Manager 2 `0.5.7`; conservative cleanup rules and
+  existing-career support are unchanged.
+
+## [0.2.2] - 2026-08-20
+
+### Changed
+
+- Rebuilt the native DLL against the Teamfight Manager 2 `0.5.6` Mod SDK.
+- Restricted the declared base range to `>=0.5.6, <0.5.7` because the native
+  SDK libraries changed and older game versions have not been runtime-tested
+  with this build.
+
+### Compatibility
+
+- Tested on Teamfight Manager 2 `0.5.6`; conservative cleanup rules and
+  existing-career support are unchanged.
+
+## [0.2.1] - 2026-08-12
+
+### Changed
+
+- Rebuilt the native DLL against the Teamfight Manager 2 `0.5.5` Mod SDK.
+- Restricted the declared base range to `>=0.5.5, <0.5.6` because the native
+  SDK libraries changed and older game versions have not been runtime-tested
+  with this build.
+
+### Compatibility
+
+- Tested on Teamfight Manager 2 `0.5.5`; conservative cleanup rules and
+  existing-career support are unchanged.
+
 ## [0.2.0] - 2026-08-05
 
 ### Changed
@@ -130,7 +172,10 @@ The project uses [Semantic Versioning](https://semver.org/).
 - Authoritative retirement through the game server extension.
 - Per-save cleanup count and name records in the mod save namespace.
 
-[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.2.3...HEAD
+[0.2.3]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.2.2...v0.2.3
+[0.2.2]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.2.1...v0.2.2
+[0.2.1]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.8...v0.2.0
 [0.1.8]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.7...v0.1.8
 [0.1.7]: https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup/compare/v0.1.6...v0.1.7
