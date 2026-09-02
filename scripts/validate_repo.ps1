@@ -76,8 +76,8 @@ if ($cargo -notmatch '(?m)^license\s*=\s*"MPL-2\.0"') {
     throw "Cargo.toml must declare MPL-2.0."
 }
 $base = @($modInfo.dependencies | Where-Object { $_.mod_id -eq "base" })
-if ($base.Count -ne 1 -or $base[0].version -ne ">=0.5.7, <0.5.8") {
-    throw "RRFAC must declare the supported 0.5.7 base range."
+if ($base.Count -ne 1 -or $base[0].version -ne ">=0.5.8, <0.5.9") {
+    throw "RWFAC must declare the supported 0.5.8 base range."
 }
 foreach ($expected in @(
     "[code]tfm2_real_world_free_agent_cleanup.dll[/code]",
@@ -88,7 +88,7 @@ foreach ($expected in @(
         throw "Workshop description is missing or inconsistent: $expected"
     }
 }
-if ($workshop -notmatch '\[b\]Tested with:\[/b\] TFM2 0\.5\.7') {
+if ($workshop -notmatch '\[b\]Tested with:\[/b\] TFM2 0\.5\.8') {
     throw "Workshop Tested with line must match the supported base range."
 }
 if ($workshop -notmatch '(?m)^\[b\]Last tested:\[/b\] \d{2}/\d{2}/\d{4}\r?$') {
