@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.0] - 2026-09-18
+
+### Changed
+
+- Migrated the native cleanup to the Stable Mod API required by TFM2 0.6.0.
+- Replaced client-side scanning with authoritative server record enumeration.
+- Preserved the conservative duplicate and verified stale-roster cleanup scope.
+- Existing careers remain supported; backing up before first use is still recommended.
+
 All notable public changes to Real World Free Agent Cleanup will be documented
 here.
 

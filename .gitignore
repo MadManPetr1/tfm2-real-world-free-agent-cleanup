@@ -1,4 +1,5 @@
 /target/
+/vendor/
 /tfm2_real_world_free_agent_cleanup.dll
 /real_world_free_agent_cleanup.dll
 /mod.workshop_id

@@ -1,144 +1,188 @@
-use game_core::RetirementState;
-use mod_api::*;
-use std::collections::HashSet;
-use std::sync::atomic::{AtomicUsize, Ordering};
+use mod_api_stable::*;
+use serde_json::Value;
+use std::collections::{HashMap, HashSet};
 
 const MOD_ID: &str = "tfm2_real_world_free_agent_cleanup";
-const SAVE_SCHEMA_VERSION: usize = 1;
-const CLIENT_RESCAN_FRAMES: usize = 300;
+const SAVE_SCHEMA_VERSION: usize = 2;
 const CONTRACT_CORRECTIONS: &[(&str, &str, &str)] = &[
     ("zyko", "supernova", "darkzero dragonsteel"),
     ("zekas", "vivo keyd stars", "vivo keyd stars academy"),
 ];
 
 fn normalized_name(name: &str) -> String {
-    let mut normalized = String::with_capacity(name.len());
-    for part in name.split_whitespace() {
-        if !normalized.is_empty() {
-            normalized.push(' ');
+    name.split_whitespace()
+        .flat_map(|part| part.chars().flat_map(char::to_lowercase).chain([' ']))
+        .collect::<String>()
+        .trim()
+        .to_owned()
+}
+
+fn normalized_json(value: &Value) -> String {
+    value
+        .to_string()
+        .to_lowercase()
+        .replace([' ', '_', '-'], "")
+}
+
+fn is_retired(value: &Value) -> bool {
+    normalized_json(value).contains("retired")
+}
+
+fn is_free_agent(value: &Value) -> bool {
+    let compact = normalized_json(value);
+    compact.contains("freeagent") || compact.contains("\"teamid\":null") || compact == "null"
+}
+
+fn find_team_id(value: &Value) -> Option<usize> {
+    match value {
+        Value::Object(map) => {
+            for key in ["team_id", "teamId", "team"] {
+                if let Some(id) = map.get(key).and_then(Value::as_u64) {
+                    return Some(id as usize);
+                }
+            }
+            map.values().find_map(find_team_id)
         }
-        for character in part.chars() {
-            normalized.extend(character.to_lowercase());
-        }
+        Value::Array(values) => values.iter().find_map(find_team_id),
+        _ => None,
     }
-    normalized
 }
 
-fn contract_team_id(athlete: &Athlete) -> Option<usize> {
-    athlete.contract.team_id()
+fn retired_value_like(active: &Value, sample: Option<&Value>) -> Value {
+    if let Some(sample) = sample {
+        return sample.clone();
+    }
+    match active {
+        Value::String(_) => Value::String("Retired".to_owned()),
+        Value::Object(map) if map.len() == 1 => {
+            let payload = map.values().next().cloned().unwrap_or(Value::Null);
+            serde_json::json!({"Retired": payload})
+        }
+        _ => Value::String("Retired".to_owned()),
+    }
 }
 
-fn verified_stale_contract_ids(records: &[(usize, String, String)]) -> Vec<usize> {
-    let mut stale_ids = Vec::new();
+#[derive(Clone)]
+struct AthleteRecord {
+    id: usize,
+    display_name: String,
+    name: String,
+    contract: Value,
+    retirement: Value,
+}
 
-    for &(player_name, canonical_team, stale_team) in CONTRACT_CORRECTIONS {
-        let canonical_exists = records
+fn verified_stale_contract_ids(
+    athletes: &[AthleteRecord],
+    team_names: &HashMap<usize, String>,
+) -> Vec<usize> {
+    let contracted = athletes
+        .iter()
+        .filter_map(|athlete| {
+            let team_id = find_team_id(&athlete.contract)?;
+            let team = team_names.get(&team_id)?;
+            Some((athlete.id, athlete.name.as_str(), team.as_str()))
+        })
+        .collect::<Vec<_>>();
+    let mut result = Vec::new();
+    for (player_name, canonical_team, stale_team) in CONTRACT_CORRECTIONS {
+        let canonical_exists = contracted
             .iter()
             .any(|(_, name, team)| name == player_name && team == canonical_team);
-        if !canonical_exists {
-            continue;
-        }
-
-        for (athlete_id, name, team) in records {
-            if name == player_name && team == stale_team && !stale_ids.contains(athlete_id) {
-                stale_ids.push(*athlete_id);
-            }
+        if canonical_exists {
+            result.extend(
+                contracted
+                    .iter()
+                    .filter(|(_, name, team)| name == player_name && team == stale_team)
+                    .map(|(id, _, _)| *id),
+            );
         }
     }
-
-    stale_ids
+    result
 }
 
 struct CleanupServerExtension;
 
-impl ModServerExtension for CleanupServerExtension {
-    fn on_server_start(&self, ctx: &mut ServerModContext) {
-        let rostered_names: HashSet<String> = ctx
-            .database
-            .athletes
-            .iter()
-            .filter(|athlete| {
-                !athlete.contract.is_free_agent()
-                    && !matches!(athlete.retirement, RetirementState::Retired)
+impl StableServerExtension for CleanupServerExtension {
+    fn on_server_start(&self, ctx: &mut StableServerCtx<'_>) {
+        let athletes = ctx
+            .record_ids(RecordKindV1::Athlete)
+            .into_iter()
+            .filter_map(|id| {
+                let display_name = ctx.record_get_string(RecordKindV1::Athlete, id, "name")?;
+                let contract = ctx
+                    .record_get_json(RecordKindV1::Athlete, id, "contract")
+                    .and_then(|json| serde_json::from_str(&json).ok())?;
+                let retirement = ctx
+                    .record_get_json(RecordKindV1::Athlete, id, "retirement")
+                    .and_then(|json| serde_json::from_str(&json).ok())?;
+                Some(AthleteRecord {
+                    id,
+                    name: normalized_name(&display_name),
+                    display_name,
+                    contract,
+                    retirement,
+                })
             })
-            .map(|athlete| normalized_name(&athlete.name))
+            .collect::<Vec<_>>();
+
+        let team_names = ctx
+            .record_ids(RecordKindV1::Team)
+            .into_iter()
+            .filter_map(|id| {
+                ctx.record_get_string(RecordKindV1::Team, id, "name")
+                    .map(|name| (id, normalized_name(&name)))
+            })
+            .collect::<HashMap<_, _>>();
+
+        let rostered_names = athletes
+            .iter()
+            .filter(|athlete| !is_retired(&athlete.retirement))
+            .filter(|athlete| !is_free_agent(&athlete.contract))
+            .map(|athlete| athlete.name.clone())
             .filter(|name| !name.is_empty())
-            .collect();
+            .collect::<HashSet<_>>();
 
-        let mut duplicates: Vec<(usize, String)> = ctx
-            .database
-            .athletes
+        let mut targets = athletes
             .iter()
-            .filter(|athlete| {
-                athlete.contract.is_free_agent()
-                    && matches!(athlete.retirement, RetirementState::Active)
-            })
-            .filter(|athlete| rostered_names.contains(&normalized_name(&athlete.name)))
-            .map(|athlete| (athlete.id, athlete.name.clone()))
-            .collect();
-
-        let contracted_records = ctx
-            .database
-            .athletes
-            .iter()
-            .filter(|athlete| {
-                !athlete.contract.is_free_agent()
-                    && !matches!(athlete.retirement, RetirementState::Retired)
-            })
-            .filter_map(|athlete| {
-                let team_id = contract_team_id(athlete)?;
-                let team = ctx.database.teams.get(team_id)?;
-                Some((
-                    athlete.id,
-                    athlete.name.clone(),
-                    normalized_name(&athlete.name),
-                    normalized_name(&team.name),
-                ))
-            })
+            .filter(|athlete| !is_retired(&athlete.retirement))
+            .filter(|athlete| is_free_agent(&athlete.contract))
+            .filter(|athlete| rostered_names.contains(&athlete.name))
+            .map(|athlete| athlete.id)
             .collect::<Vec<_>>();
 
-        let correction_records = contracted_records
-            .iter()
-            .map(|(athlete_id, _, name, team)| (*athlete_id, name.clone(), team.clone()))
-            .collect::<Vec<_>>();
-        for stale_id in verified_stale_contract_ids(&correction_records) {
-            if !duplicates.iter().any(|(id, _)| *id == stale_id) {
-                let display_name = contracted_records
-                    .iter()
-                    .find(|(id, _, _, _)| *id == stale_id)
-                    .map(|(_, display_name, _, _)| display_name.clone())
-                    .unwrap_or_default();
-                duplicates.push((stale_id, display_name));
+        for id in verified_stale_contract_ids(&athletes, &team_names) {
+            if !targets.contains(&id) {
+                targets.push(id);
             }
         }
 
-        let duplicate_count = duplicates.len();
-        for (athlete_id, _) in &duplicates {
-            if let Some(athlete) = ctx.database.athletes.get_mut(*athlete_id) {
-                athlete.retirement = RetirementState::Retired;
+        let retired_sample = athletes
+            .iter()
+            .find(|athlete| is_retired(&athlete.retirement))
+            .map(|athlete| athlete.retirement.clone());
+        let mut cleaned_names = Vec::new();
+        for id in targets {
+            let Some(athlete) = athletes.iter().find(|athlete| athlete.id == id) else {
+                continue;
+            };
+            let retired = retired_value_like(&athlete.retirement, retired_sample.as_ref());
+            if ctx.record_set_json(
+                RecordKindV1::Athlete,
+                id,
+                "retirement",
+                &retired.to_string(),
+            ) {
+                cleaned_names.push(athlete.display_name.clone());
             }
         }
 
-        let names = duplicates
-            .iter()
-            .map(|(_, name)| name.as_str())
-            .collect::<Vec<_>>()
-            .join(", ");
-
-        ctx.database
-            .mod_save_data
-            .set_version(MOD_ID, SAVE_SCHEMA_VERSION);
-        ctx.database.mod_save_data.set_string(
-            MOD_ID,
-            "last_cleanup_count",
-            duplicate_count.to_string(),
-        );
-        ctx.database
-            .mod_save_data
-            .set_string(MOD_ID, "last_cleanup_names", names.clone());
-
+        let names = cleaned_names.join(", ");
+        ctx.save_set_version(SAVE_SCHEMA_VERSION);
+        let _ = ctx.save_set_string("last_cleanup_count", &cleaned_names.len().to_string());
+        let _ = ctx.save_set_string("last_cleanup_names", &names);
         println!(
-            "[{MOD_ID}] retired {duplicate_count} duplicate free agent(s){}",
+            "[{MOD_ID}] retired {} duplicate or verified stale athlete record(s){}",
+            cleaned_names.len(),
             if names.is_empty() {
                 String::new()
             } else {
@@ -148,106 +192,22 @@ impl ModServerExtension for CleanupServerExtension {
     }
 }
 
-struct CleanupClientExtension {
-    last_database_id: AtomicUsize,
-    update_counter: AtomicUsize,
+fn init(host: &StableHost) -> StableMod {
+    host.log(
+        LogLevel::Info,
+        "Real World Free Agent Cleanup 0.3.0 stable module initialized",
+    );
+    let mut registration = StableMod::new(MOD_ID);
+    registration.set_server_extension(CleanupServerExtension);
+    registration
 }
 
-impl ModExtension for CleanupClientExtension {
-    fn post_update(&self, scene: &mut Scene, _ui: &mut GameUI, _assets: &mut Assets, _dt: f32) {
-        let Scene::InGame { data } = scene else {
-            self.last_database_id.store(usize::MAX, Ordering::Release);
-            self.update_counter.store(0, Ordering::Release);
-            return;
-        };
-
-        let database_id = data.db().id;
-        let database_changed =
-            self.last_database_id.swap(database_id, Ordering::AcqRel) != database_id;
-        let update = self.update_counter.fetch_add(1, Ordering::AcqRel);
-        if !database_changed && !update.is_multiple_of(CLIENT_RESCAN_FRAMES) {
-            return;
-        }
-
-        let duplicate_ids = {
-            let database = data.db();
-            let active_names: HashSet<String> = database
-                .athletes
-                .values()
-                .filter(|athlete| {
-                    !athlete.contract.is_free_agent()
-                        && !matches!(athlete.retirement, RetirementState::Retired)
-                })
-                .map(|athlete| normalized_name(&athlete.name))
-                .filter(|name| !name.is_empty())
-                .collect();
-
-            let mut duplicate_ids = database
-                .athletes
-                .values()
-                .filter(|athlete| {
-                    athlete.contract.is_free_agent()
-                        && active_names.contains(&normalized_name(&athlete.name))
-                })
-                .map(|athlete| athlete.id)
-                .collect::<Vec<_>>();
-
-            let contracted_records = database
-                .athletes
-                .values()
-                .filter(|athlete| {
-                    !athlete.contract.is_free_agent()
-                        && !matches!(athlete.retirement, RetirementState::Retired)
-                })
-                .filter_map(|athlete| {
-                    let team_id = contract_team_id(athlete)?;
-                    let team = database.teams.get(&team_id)?;
-                    Some((
-                        athlete.id,
-                        normalized_name(&athlete.name),
-                        normalized_name(&team.name),
-                    ))
-                })
-                .collect::<Vec<_>>();
-
-            for athlete_id in verified_stale_contract_ids(&contracted_records) {
-                if !duplicate_ids.contains(&athlete_id) {
-                    duplicate_ids.push(athlete_id);
-                }
-            }
-
-            duplicate_ids
-        };
-
-        if duplicate_ids.is_empty() {
-            return;
-        }
-
-        let mut database = data.db_mut();
-        let mut removed = 0;
-        for athlete_id in duplicate_ids {
-            removed += usize::from(database.athletes.remove(&athlete_id).is_some());
-        }
-
-        println!("[{MOD_ID}] removed {removed} duplicate record(s) from the client snapshot");
-    }
-}
-
-fn init(_ctx: &GameCtx) -> ModRegistration {
-    let mut reg = ModRegistration::new(MOD_ID);
-    reg.set_extension(CleanupClientExtension {
-        last_database_id: AtomicUsize::new(usize::MAX),
-        update_counter: AtomicUsize::new(0),
-    });
-    reg.set_server_extension(CleanupServerExtension);
-    reg
-}
-
-declare_mod!(init);
+declare_stable_mod!(init);
 
 #[cfg(test)]
 mod tests {
-    use super::{normalized_name, verified_stale_contract_ids};
+    use super::{find_team_id, is_free_agent, is_retired, normalized_name, retired_value_like};
+    use serde_json::json;
 
     #[test]
     fn normalizes_case_and_whitespace() {
@@ -256,21 +216,20 @@ mod tests {
     }
 
     #[test]
-    fn applies_only_verified_contract_pair_corrections() {
-        let records = vec![
-            (1, "zyko".to_string(), "supernova".to_string()),
-            (2, "zyko".to_string(), "darkzero dragonsteel".to_string()),
-            (3, "zyko".to_string(), "unrelated team".to_string()),
-            (
-                4,
-                "zekas".to_string(),
-                "vivo keyd stars academy".to_string(),
-            ),
-        ];
+    fn recognizes_supported_contract_shapes() {
+        assert!(is_free_agent(&json!("FreeAgent")));
+        assert!(is_free_agent(&json!({"team_id": null})));
+        assert!(!is_free_agent(&json!({"team_id": 12})));
+        assert_eq!(find_team_id(&json!({"contract":{"team_id":12}})), Some(12));
+    }
 
-        assert_eq!(verified_stale_contract_ids(&records), vec![2]);
+    #[test]
+    fn mirrors_the_games_retirement_encoding() {
+        assert!(is_retired(&json!("Retired")));
+        assert_eq!(retired_value_like(&json!("Active"), None), json!("Retired"));
+        assert_eq!(
+            retired_value_like(&json!("Active"), Some(&json!({"Retired":null}))),
+            json!({"Retired":null})
+        );
     }
 }
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at https://mozilla.org/MPL/2.0/.

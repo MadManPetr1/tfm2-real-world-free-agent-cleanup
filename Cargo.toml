@@ -1,6 +1,6 @@
 [package]
 name = "tfm2_real_world_free_agent_cleanup"
-version = "0.2.4"
+version = "0.3.0"
 edition = "2021"
 authors = ["MadManPetr1"]
 description = "Unofficial duplicate-player cleanup for Crown's Real World Database '26 and similar imported database careers"
@@ -13,5 +13,7 @@ keywords = ["teamfight-manager-2", "mod", "database", "free-agents"]
 crate-type = ["cdylib"]
 
 [dependencies]
+mod-api-stable = { path = "vendor/mod-api-stable" }
+serde_json = "1"
 
 [workspace]
