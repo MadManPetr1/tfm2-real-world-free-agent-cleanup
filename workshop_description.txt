@@ -1,3 +1,11 @@
+[h1][ARCHIVED / MAINTENANCE PAUSED][/h1]
+
+This mod is currently unmaintained.
+
+The archived release is the last known working version for TFM2 0.5.8 and the legacy 0.5.8 Mod SDK. It is not supported or verified on TFM2 0.6.0.
+
+Unfinished TFM2 0.6.0 Stable API work is preserved in the source repository under recovery/tfm2-0.6.0-compat in case development resumes later. There is currently no planned update schedule.
+
 [h1]Real World Free Agent Cleanup[/h1]
 
 [b]Compatibility cleanup for Crown's Real World Database '26.[/b]
@@ -18,7 +26,7 @@ The cleanup is intentionally conservative and does not broadly delete unrelated 
 
 [b]Designed for:[/b] Crown's Real World Database '26
 [b]Database tested:[/b] 2026MSIv2.tfm2db
-[b]Tested with:[/b] TFM2 0.6.0
+[b]Tested with:[/b] TFM2 0.5.8
 [b]Existing careers:[/b] Supported
 
 Other databases are not guaranteed to be compatible. Backing up your career before first use is recommended.
@@ -43,7 +51,7 @@ This mod contains native code:
 
 [url=https://github.com/MadManPetr1/tfm2-real-world-free-agent-cleanup]Source code on GitHub[/url]
 
-[b]Current version:[/b] v0.3.0
-[b]Last tested:[/b] 18/09/2026
+[b]Current version:[/b] v0.2.4
+[b]Last tested:[/b] 02/09/2026
 
 When reporting a problem, include your game version, database filename, enabled mods, and whether the career was newly created or already in progress.
